@@ -124,11 +124,11 @@ app.post('/api/login', (req, res) => {
     if (!user)
       return res
         .status(400)
-        .json({ isAuth: false, message: "email wasn't found" });
+        .json({ isAuth: false, message: "Email wasn't found" });
 
     user.comparePasswords(req.body.password, (err, isMatch) => {
       if (!isMatch)
-        return res.status(401).json({
+        return res.status(401).send({
           isAuth: false,
           message: 'Wrong password!',
         });
