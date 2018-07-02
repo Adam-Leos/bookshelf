@@ -80,3 +80,70 @@ export function getUserReviews(userID) {
     payload: request,
   };
 }
+
+export function getBook(id) {
+  const request = axios
+    .get(`/api/book?id=${id}`)
+    .then(response => response.data);
+
+  return {
+    type: 'GET_BOOK',
+    payload: request,
+  };
+}
+
+export function updateBook(data) {
+  const request = axios.put('/api/book', data).then(response => response.data);
+
+  return {
+    type: 'UPDATE_BOOK',
+    payload: request,
+  };
+}
+
+export function deleteBook(id) {
+  const request = axios
+    .delete(`/api/book?id=${id}`)
+    .then(response => response.data);
+
+  return {
+    type: 'DELETE_BOOK',
+    payload: request,
+  };
+}
+
+export function clearBook() {
+  return {
+    type: 'CLEAR_BOOK',
+    payload: {
+      book: {},
+      isBookUpdated: false,
+      isBookDeleted: false,
+    },
+  };
+}
+
+export function getUsers() {
+  const request = axios.get('/api/users').then(response => response.data);
+
+  return {
+    type: 'GET_USERS',
+    payload: request,
+  };
+}
+
+export function registerUser(user, userList) {
+  const request = axios.post('/api/register', user).then(({ data }) => {
+    const { success, user } = data;
+    const users = success ? [...userList, user] : userList;
+    return {
+      users,
+      success,
+    };
+  });
+
+  return {
+    type: 'REGISTER_USER',
+    payload: request,
+  };
+}

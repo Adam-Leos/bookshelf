@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FontAwesome from 'react-fontawesome';
 
-const SideNavItems = () => {
+const SideNavItems = ({ user }) => {
   const items = [
     {
       type: 'navItem',
@@ -16,14 +17,14 @@ const SideNavItems = () => {
       icon: 'file-text-o',
       text: 'My Profile',
       link: '/user',
-      restricted: false,
+      restricted: true,
     },
     {
       type: 'navItem',
       icon: 'file-text-o',
       text: 'Add Admins',
       link: '/user/register',
-      restricted: false,
+      restricted: true,
     },
     {
       type: 'navItem',
@@ -31,27 +32,28 @@ const SideNavItems = () => {
       text: 'Login',
       link: '/login',
       restricted: false,
+      exclude: true,
     },
     {
       type: 'navItem',
       icon: 'file-text-o',
       text: 'My Reviews',
       link: '/user/user-reviews',
-      restricted: false,
+      restricted: true,
     },
     {
       type: 'navItem',
       icon: 'file-text-o',
       text: 'Add Review',
       link: '/user/add',
-      restricted: false,
+      restricted: true,
     },
     {
       type: 'navItem',
       icon: 'file-text-o',
       text: 'Logout',
       link: '/user/logout',
-      restricted: false,
+      restricted: true,
     },
   ];
 
@@ -65,9 +67,15 @@ const SideNavItems = () => {
   );
 
   const renderSideNavItems = () => {
-    const sideNavItems = items.map((item, index) => {
-      return createSideNavItem(item, index);
-    });
+    const login = user.login;
+    const sideNavItems =
+      login &&
+      items.map((item, index) => {
+        const isToRenderElement =
+          (login.isAuth && !item.exclude) || !item.restricted;
+
+        return isToRenderElement ? createSideNavItem(item, index) : null;
+      });
 
     return sideNavItems;
   };
@@ -75,4 +83,8 @@ const SideNavItems = () => {
   return <div>{renderSideNavItems()}</div>;
 };
 
-export default SideNavItems;
+function mapStateToProps(state) {
+  return { user: state.userReducer };
+}
+
+export default connect(mapStateToProps)(SideNavItems);

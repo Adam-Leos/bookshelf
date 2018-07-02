@@ -13,6 +13,8 @@ export default function(ComposedClass, reload) {
     }
 
     componentWillReceiveProps(nextProps) {
+      if (!nextProps.user.login) return null;
+
       this.setState({ isLoading: false });
 
       if (!nextProps.user.login.isAuth) {

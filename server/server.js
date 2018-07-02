@@ -162,7 +162,7 @@ app.put('/api/book', (req, res) => {
 // DELETE
 
 app.delete('/api/book', (req, res) => {
-  const id = req.body.id;
+  const id = req.query.id;
 
   Book.findByIdAndRemove(id, (err, doc) => {
     if (err) return res.status(400).send(err);
